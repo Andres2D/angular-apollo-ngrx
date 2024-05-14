@@ -24,7 +24,6 @@ const createDefaultApollo = (
   const cache = new InMemoryCache();
 
   const http = httpLink.create({
-    // uri: inject(API_GITHUB_TOKEN)
     uri: import.meta.env['NG_APP_API_URL']
   })
 

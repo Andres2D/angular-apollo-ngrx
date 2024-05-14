@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { Apollo, ApolloModule } from 'apollo-angular';
 import { map } from 'rxjs';
 import { GET_USER_PROFILE } from './graphql/queries';
+import { User } from './interfaces/user.interface';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.apollo.query({ query: GET_USER_PROFILE })
+    this.apollo.query<{ viewer: User }>({ query: GET_USER_PROFILE })
     .pipe(
       map(data => {
         return {
