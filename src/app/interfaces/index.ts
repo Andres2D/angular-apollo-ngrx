@@ -8,10 +8,14 @@ import {
 import {
   Repository
 } from './repository.interface';
+import {
+  Dashboard
+} from './dashboard.interface';
 
 export {
   User,
   Followers,
   Edge,
-  Repository
+  Repository,
+  Dashboard
 }
