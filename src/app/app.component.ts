@@ -1,42 +1,23 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { Apollo, ApolloModule } from 'apollo-angular';
-import { map } from 'rxjs';
-import { GET_USER_PROFILE } from './graphql/queries';
-import { User } from './interfaces/user.interface';
+import { DashboardStore } from './store/dashboard.store';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ RouterOutlet, ApolloModule ],
+  imports: [ RouterOutlet, CommonModule ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   title = 'apollo-ngrx-template';
 
-  constructor(private readonly apollo: Apollo) {}
+  constructor(protected readonly store: DashboardStore) {}
 
   ngOnInit(): void {
-
-    this.apollo.query<{ viewer: User }>({ query: GET_USER_PROFILE })
-    .pipe(
-      map(data => {
-        return {
-          login: data.data.viewer.login,
-          bio: data.data.viewer.bio,
-          avatarUrl: data.data.viewer.avatarUrl,
-        }
-      })
-    )
-    .subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
+    console.log(this.store.dashboard());
+    console.log(this.store.data);
   }
 }

@@ -2,7 +2,7 @@ import {
   User,
   Followers,
   Edge
-} from './';
+} from '.';
 
 export interface Dashboard extends User {
   followers: Followers;
