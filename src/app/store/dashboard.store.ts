@@ -7,7 +7,6 @@ import {
   withState,
   patchState
 } from '@ngrx/signals';
-// import { withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 
@@ -37,19 +36,22 @@ export const DashboardStore = signalStore(
           tap({ next: () => patchState(store, setLoading()) }),
           switchMap(() => apollo.query({ query: GET_DASHBOARD})),
           tapResponse({
-            next: (response: ApolloQueryResult<{ viewer: Dashboard }>) => {console.log(response), patchState(store, { data: response.data.viewer })},
-            error: (errors: ApolloError[]) => patchState(store, setErrors(errors.map(error => error.message))),
-            finalize: () => patchState(store, setLoaded())
+            next: (response: ApolloQueryResult<{ viewer: Dashboard }>) => {
+              patchState(store, { data: response.data.viewer }),
+              patchState(store, setLoaded())
+            },
+            error: (errors: ApolloError[]) => 
+              patchState(store, setErrors(errors.map(error => error.message))),
+            finalize: () => {
+              patchState(store, setLoaded())
+            }
           })
         )
       )
     }
   }),
   withComputed((data) => ({
-    dashboard: computed(() => {
-      console.log(data);
-      return data
-    })
+    dashboard: computed(() => data)
   })),
   withHooks(({loadAll}) => ({
     onInit: () => loadAll()

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { DashboardStore } from './store/dashboard.store';
@@ -8,16 +8,11 @@ import { DashboardStore } from './store/dashboard.store';
   selector: 'app-root',
   standalone: true,
   imports: [ RouterOutlet, CommonModule ],
+  providers: [ DashboardStore ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'apollo-ngrx-template';
-
-  constructor(protected readonly store: DashboardStore) {}
-
-  ngOnInit(): void {
-    console.log(this.store.dashboard());
-    console.log(this.store.data);
-  }
+  readonly store = inject(DashboardStore);
 }
